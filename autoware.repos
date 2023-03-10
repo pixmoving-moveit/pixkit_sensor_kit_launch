@@ -85,7 +85,7 @@ repositories:
     type: git
     url: https://github.com/tier4/pacmod_interface.git
     version: main
-  vehicle/external/pixmoving:
+  vehicle/external/pix_driver:
     type: git
     url: https://github.com/pixmoving-moveit/pix_driver.git
     version: main
