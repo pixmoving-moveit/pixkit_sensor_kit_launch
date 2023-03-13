@@ -71,6 +71,18 @@ repositories:
     type: git
     url: https://github.com/autowarefoundation/ros2_socketcan.git
     version: 1.1.0
+  sensor_component/external/nmea_navsat_driver:
+    type: git
+    url: https://github.com/pixmoving-moveit/nmea_navsat_driver.git
+    version: ros2
+  sensor_component/external/ultra_sonic_radar_driver:
+    type: git
+    url: https://github.com/pixmoving-moveit/ultra_sonic_radar_driver.git
+    version: ros2
+  sensor_component/external/ars408_driver:
+    type: git
+    url: https://github.com/pixmoving-moveit/ars408_driver.git
+    version: main
   # sensor_kit
   sensor_kit/sample_sensor_kit_launch:
     type: git
@@ -79,10 +91,6 @@ repositories:
   sensor_kit/external/awsim_sensor_kit_launch: # TODO: Integrate into sample_sensor_kit_launch
     type: git
     url: https://github.com/RobotecAI/awsim_sensor_kit_launch.git
-    version: main
-  sensor_kit/external/pixkit_sensor_kit_launch:
-    type: git
-    url: https://github.com/pixmoving-moveit/pixkit_sensor_kit_launch.git
     version: main
   # vehicle
   vehicle/sample_vehicle_launch:
