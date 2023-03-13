@@ -1,0 +1,9 @@
+- name: Install ouster-ros(ros2 sensor driver  )
+  ansible.builtin.apt:
+    name: ros-humble-{{ rosdistro }}-ros2-ouster
+    state: present
+
+- name: Install usb-cam(ros2 sensor driver  )
+  ansible.builtin.apt:
+    name: ros-humble-{{ rosdistro }}-usb-cam
+    state: present
