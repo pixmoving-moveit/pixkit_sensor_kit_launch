@@ -81,7 +81,7 @@ repositories:
     version: ros2
   sensor_component/external/ars408_driver:
     type: git
-    url: https://github.com/pixmoving-moveit/ars408_driver.git
+    url: https://github.com/tier4/ars408_driver.git
     version: main
   # sensor_kit
   sensor_kit/sample_sensor_kit_launch:
@@ -108,5 +108,5 @@ repositories:
   # param
   param/autoware_individual_params:
     type: git
-    url: https://github.com/ahuazuipiaoliang/autoware_individual_params.git
-    version: pixkit_sensors
+    url: https://github.com/pixmoving-moveit/autoware_individual_params.git
+    version: feature/pixkit_sensors
