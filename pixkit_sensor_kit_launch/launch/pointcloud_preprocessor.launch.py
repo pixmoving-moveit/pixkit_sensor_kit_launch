@@ -1,4 +1,4 @@
-# Copyright 2020 Tier IV, Inc. All rights reserved.
+# Copyright 2023 Pixmoving, Inc. All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -31,7 +31,7 @@ def launch_setup(context, *args, **kwargs):
         package="pointcloud_preprocessor",
         plugin="pointcloud_preprocessor::PointCloudConcatenateDataSynchronizerComponent",
         name="concatenate_data",
-        remappings=[("output", "concatenated/pointcloud")],
+        remappings=[("output", "concatenated/pointcloud_unfilter")],
         parameters=[
             {
                 "input_topics": [
@@ -44,7 +44,29 @@ def launch_setup(context, *args, **kwargs):
         ],
         extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
     )
-
+    # set crop box filter as a component
+    cropbox_component = ComposableNode(
+        package="pointcloud_preprocessor",
+        plugin="pointcloud_preprocessor::CropBoxFilterComponent",
+        name="crop_box_filter",
+        remappings=[
+            ("input", "concatenated/pointcloud_unfilter"),
+            ("output", "concatenated/pointcloud"),
+        ],
+        parameters=[
+            {
+                "input_frame": LaunchConfiguration("base_frame"),
+                "output_frame": LaunchConfiguration("base_frame"),
+                "min_x": -1.0,
+                "max_x": 1.0,
+                "min_y": -0.5,
+                "max_y": 0.5,
+                "min_z": -0.5,
+                "max_z": 1.8,
+                "negative": True,
+            }
+        ],
+    )
     # set container to run all required components in the same process
     container = ComposableNodeContainer(
         name=LaunchConfiguration("container_name"),
@@ -64,7 +86,7 @@ def launch_setup(context, *args, **kwargs):
 
     # load concat or passthrough filter
     concat_loader = LoadComposableNodes(
-        composable_node_descriptions=[concat_component],
+        composable_node_descriptions=[concat_component, cropbox_component],
         target_container=target_container,
         condition=IfCondition(LaunchConfiguration("use_concat_filter")),
     )
