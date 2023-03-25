@@ -83,10 +83,6 @@ repositories:
     type: git
     url: https://github.com/tier4/ars408_driver.git
     version: main
-  sensor_component/external/ouster_ros:
-    type: git
-    url: https://github.com/ouster-lidar/ouster-ros.git
-    version: ros2
   # sensor_kit
   sensor_kit/sample_sensor_kit_launch:
     type: git
