@@ -5,6 +5,7 @@
   <!-- <link name="base_link" />  -->
   <link name="rs16" />
   <link name="rsbp" />
+  <link name="gnss" />
   <link name="os_sensor" />
   <link name="ultrasonic_0" />
   <link name="ultrasonic_1" />
@@ -39,7 +40,11 @@
     <child link="rs16" />
     <origin xyz="${calibration['base_link2rs16']['x']} ${calibration['base_link2rs16']['y']} ${calibration['base_link2rs16']['z']}" rpy="${calibration['base_link2rs16']['roll']} ${calibration['base_link2rs16']['pitch']} ${calibration['base_link2rs16']['yaw']}" />
   </joint>
-
+  <joint name="baselink_gnss" type="fixed">
+    <parent link="base_link" />
+    <child link="gnss" />
+    <origin xyz="${calibration['base_link2gnss']['x']} ${calibration['base_link2gnss']['y']} ${calibration['base_link2gnss']['z']}" rpy="${calibration['base_link2gnss']['roll']} ${calibration['base_link2gnss']['pitch']} ${calibration['base_link2gnss']['yaw']}" />
+  </joint>
   <joint name="baselink_ultrasonic_0" type="fixed">
     <parent link="base_link" />
     <child link="ultrasonic_0" />
