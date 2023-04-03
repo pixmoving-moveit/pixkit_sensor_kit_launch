@@ -15,6 +15,8 @@
   <link name="ultrasonic_5" />
   <link name="ultrasonic_6" />
   <link name="ultrasonic_7" />
+  <link name="camera" />
+
 
   <xacro:arg name="config_dir" default="$(find pixkit_sensor_kit_description)"/>
   <xacro:property name="calibration" value="${xacro.load_yaml('$(arg config_dir)/sensors_calibration.yaml')}"/>
@@ -84,5 +86,11 @@
     <parent link="base_link" />
     <child link="ultrasonic_7" />
     <origin xyz="${calibration['base_link2ultrasonic_7']['x']} ${calibration['base_link2ultrasonic_7']['y']} ${calibration['base_link2ultrasonic_7']['z']}" rpy="${calibration['base_link2ultrasonic_7']['roll']} ${calibration['base_link2ultrasonic_7']['pitch']} ${calibration['base_link2ultrasonic_7']['yaw']}" />
+  </joint>
+
+  <joint name="rs16_camera" type="fixed">
+    <parent link="rs16" />
+    <child link="camera" />
+    <origin xyz="${calibration['rs162camera']['x']} ${calibration['rs162camera']['y']} ${calibration['rs162camera']['z']}" rpy="${calibration['rs162camera']['roll']} ${calibration['rs162camera']['pitch']} ${calibration['rs162camera']['yaw']}" />
   </joint>
 </robot>

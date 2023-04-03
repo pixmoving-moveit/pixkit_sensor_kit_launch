@@ -89,3 +89,10 @@ base_link2ultrasonic_7:
   roll: 0.0
   pitch: 0.0
   yaw: 3.1416
+rs162camera:
+  x: 0.5789871
+  y: -0.08247789
+  z: -0.3453706
+  roll: -0.7583791
+  pitch: 1.5534501
+  yaw: -0.80520433

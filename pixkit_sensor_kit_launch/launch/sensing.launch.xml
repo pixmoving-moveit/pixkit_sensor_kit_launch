@@ -32,11 +32,20 @@
       <arg name="gnss_receiver" value="$(var gnss_receiver)" />
       <arg name="launch_driver" value="$(var launch_driver)"/>
     </include>
+    <!-- CAMERA DEIVER -->
+    <group>
+      <push-ros-namespace namespace="camera"/>
+      <group>
+        <push-ros-namespace namespace="traffic_light"/>
+        <include file="$(find-pkg-share pixkit_sensor_kit_launch)/launch/camera_launch.py" />
+      </group>
+    </group>
 
     <!-- Vehicle Velocity Converter  -->
     <include file="$(find-pkg-share vehicle_velocity_converter)/launch/vehicle_velocity_converter.launch.xml">
       <arg name="input_vehicle_velocity_topic" value="/vehicle/status/velocity_status"/>
       <arg name="output_twist_with_covariance" value="/sensing/vehicle_velocity_converter/twist_with_covariance"/>
     </include>
+    
   </group>
 </launch>
