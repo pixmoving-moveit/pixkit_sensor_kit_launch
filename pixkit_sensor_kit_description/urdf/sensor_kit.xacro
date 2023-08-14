@@ -156,7 +156,7 @@
   <link name="ultrasonic_7" />
 
   <xacro:macro name="ultrasonic_0" params="*ultrasonic_origin parent=sensor_kit_base_link" >
-    <joint name="ultrasonic" type="fixed">
+    <joint name="ultrasonic_0_joint" type="fixed">
       <xacro:insert_block name="ultrasonic_origin"/>
       <parent link="${parent}"/>
       <child link="ultrasonic_0"/>
@@ -164,7 +164,7 @@
   </xacro:macro>
 
   <xacro:macro name="ultrasonic_1" params="*ultrasonic_origin parent=sensor_kit_base_link" >
-    <joint name="ultrasonic" type="fixed">
+    <joint name="ultrasonic_1_joint" type="fixed">
       <xacro:insert_block name="ultrasonic_origin"/>
       <parent link="${parent}"/>
       <child link="ultrasonic_1"/>
@@ -172,7 +172,7 @@
   </xacro:macro>
 
   <xacro:macro name="ultrasonic_2" params="*ultrasonic_origin parent=sensor_kit_base_link" >
-    <joint name="ultrasonic" type="fixed">
+    <joint name="ultrasonic_2_joint" type="fixed">
       <xacro:insert_block name="ultrasonic_origin"/>
       <parent link="${parent}"/>
       <child link="ultrasonic_2"/>
@@ -180,7 +180,7 @@
   </xacro:macro>
 
   <xacro:macro name="ultrasonic_3" params="*ultrasonic_origin parent=sensor_kit_base_link" >
-    <joint name="ultrasonic" type="fixed">
+    <joint name="ultrasonic_3_joint" type="fixed">
       <xacro:insert_block name="ultrasonic_origin"/>
       <parent link="${parent}"/>
       <child link="ultrasonic_3"/>
@@ -188,7 +188,7 @@
   </xacro:macro>
 
   <xacro:macro name="ultrasonic_4" params="*ultrasonic_origin parent=sensor_kit_base_link" >
-    <joint name="ultrasonic" type="fixed">
+    <joint name="ultrasonic_4_joint" type="fixed">
       <xacro:insert_block name="ultrasonic_origin"/>
       <parent link="${parent}"/>
       <child link="ultrasonic_4"/>
@@ -196,7 +196,7 @@
   </xacro:macro>
 
   <xacro:macro name="ultrasonic_5" params="*ultrasonic_origin parent=sensor_kit_base_link" >
-    <joint name="ultrasonic" type="fixed">
+    <joint name="ultrasonic_5_joint" type="fixed">
       <xacro:insert_block name="ultrasonic_origin"/>
       <parent link="${parent}"/>
       <child link="ultrasonic_5"/>
@@ -204,7 +204,7 @@
   </xacro:macro>
 
   <xacro:macro name="ultrasonic_6" params="*ultrasonic_origin parent=sensor_kit_base_link" >
-    <joint name="ultrasonic" type="fixed">
+    <joint name="ultrasonic_6_joint" type="fixed">
       <xacro:insert_block name="ultrasonic_origin"/>
       <parent link="${parent}"/>
       <child link="ultrasonic_6"/>
@@ -212,7 +212,7 @@
   </xacro:macro>
 
   <xacro:macro name="ultrasonic_7" params="*ultrasonic_origin parent=sensor_kit_base_link" >
-    <joint name="ultrasonic" type="fixed">
+    <joint name="ultrasonic_7_joint" type="fixed">
       <xacro:insert_block name="ultrasonic_origin"/>
       <parent link="${parent}"/>
       <child link="ultrasonic_7"/>
