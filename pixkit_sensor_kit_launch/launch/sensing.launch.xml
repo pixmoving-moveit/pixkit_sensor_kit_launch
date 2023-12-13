@@ -48,8 +48,8 @@
     </include>
 
     <!--Ultrasonic Radar Driver -->
-    <include file="$(find-pkg-share pixkit_sensor_kit_launch)/launch/ultrasonic_radar.launch.xml"/>
-    <include file="$(find-pkg-share pixkit_sensor_kit_launch)/launch/ultra_sonic_radar_detector.launch.py" />
+    <!-- <include file="$(find-pkg-share pixkit_sensor_kit_launch)/launch/ultrasonic_radar.launch.xml"/>
+    <include file="$(find-pkg-share pixkit_sensor_kit_launch)/launch/ultra_sonic_radar_detector.launch.py" /> -->
 
   </group>
 </launch>
