@@ -26,6 +26,7 @@
       <include file="$(find-pkg-share pixkit_sensor_kit_launch)/launch/rslidar.py" />
     </group>
     <node pkg="topic_tools" exec="relay" name="lidar_relay" output="log">
+      <!-- <param name="input_topic" value="/livox/lidar"/> -->
       <param name="input_topic" value="/sensing/lidar/top/rslidar_sdk/rs/points"/>
       <param name="output_topic" value="/sensing/lidar/top/outlier_filtered/pointcloud"/>
       <param name="type" value="sensor_msgs/msg/Pointcloud2"/>

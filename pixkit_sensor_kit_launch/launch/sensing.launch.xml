@@ -3,7 +3,7 @@
   <arg name="vehicle_mirror_param_file" default="$(find-pkg-share sample_vehicle_description)/config/mirror.param.yaml" description="path to the file of vehicle mirror position yaml"/>
   <arg name="use_pointcloud_container" default="false" description="launch pointcloud container"/>
   <arg name="pointcloud_container_name" default="pointcloud_container"/>
-  <arg name="gnss_receiver" default="chc" description="ublox(default) or septentrio or chc"/>
+  <arg name="gnss_receiver" default="fixposition" description="ublox(default) or septentrio or chc or fixposition"/>
   <arg name="navsatfix_topic_name" default="fix" />
   <arg name="use_concat_filter" default="true"/>
 
@@ -46,6 +46,10 @@
       <arg name="input_vehicle_velocity_topic" value="/vehicle/status/velocity_status"/>
       <arg name="output_twist_with_covariance" value="/sensing/vehicle_velocity_converter/twist_with_covariance"/>
     </include>
-    
+
+    <!--Ultrasonic Radar Driver -->
+    <include file="$(find-pkg-share pixkit_sensor_kit_launch)/launch/ultrasonic_radar.launch.xml"/>
+    <include file="$(find-pkg-share pixkit_sensor_kit_launch)/launch/ultra_sonic_radar_detector.launch.py" />
+
   </group>
 </launch>

@@ -1,7 +1,7 @@
 <launch>
   <arg name="launch_driver" default="true"/>
-  <arg name="input_can_frame" default="/from_can_bus"/>
-  <arg name="output_can_frame" default="/to_can_bus"/>
+  <arg name="input_can_frame" default="/from_can1_bus"/>
+  <arg name="output_can_frame" default="/to_can1_bus"/>
   <arg name="output_ultra_sonic_radar" default="ultra_sonic_radar"/>
 
   <group>
@@ -15,10 +15,16 @@
         <remap from="output/ultra_sonic_radar_1" to="$(var output_ultra_sonic_radar)_1"/>
         <remap from="output/ultra_sonic_radar_2" to="$(var output_ultra_sonic_radar)_2"/>
         <remap from="output/ultra_sonic_radar_3" to="$(var output_ultra_sonic_radar)_3"/>
+        
         <remap from="output/ultra_sonic_radar_4" to="$(var output_ultra_sonic_radar)_4"/>
         <remap from="output/ultra_sonic_radar_5" to="$(var output_ultra_sonic_radar)_5"/>
         <remap from="output/ultra_sonic_radar_6" to="$(var output_ultra_sonic_radar)_6"/>
         <remap from="output/ultra_sonic_radar_7" to="$(var output_ultra_sonic_radar)_7"/>
+
+        <remap from="output/ultra_sonic_radar_8" to="$(var output_ultra_sonic_radar)_8"/>
+        <remap from="output/ultra_sonic_radar_9" to="$(var output_ultra_sonic_radar)_9"/>
+        <remap from="output/ultra_sonic_radar_10" to="$(var output_ultra_sonic_radar)_10"/>
+        <remap from="output/ultra_sonic_radar_11" to="$(var output_ultra_sonic_radar)_11"/>
       </node>
   </group>
 </launch>

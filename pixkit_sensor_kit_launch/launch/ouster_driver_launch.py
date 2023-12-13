@@ -1,97 +1,122 @@
-#!/usr/bin/python3
-# Copyright 2020, Steve Macenski
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
+# Copyright 2023 Ouster, Inc.
 #
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
 
-from ament_index_python.packages import get_package_share_directory
+"""Launch a sensor node along with os_cloud and os_"""
 
-from launch import LaunchDescription
-from launch_ros.actions import LifecycleNode
-from launch.actions import DeclareLaunchArgument
-from launch.substitutions import LaunchConfiguration
-from launch.actions import EmitEvent
-from launch.actions import RegisterEventHandler
-from launch_ros.events.lifecycle import ChangeState
-from launch_ros.events.lifecycle import matches_node_name
-from launch_ros.event_handlers import OnStateTransition
-from launch.actions import LogInfo
-from launch.events import matches_action
-from launch.event_handlers.on_shutdown import OnShutdown
-
+from pathlib import Path
+import launch
 import lifecycle_msgs.msg
-import os
+from ament_index_python.packages import get_package_share_directory
+from launch_ros.actions import Node, LifecycleNode
+from launch.actions import (DeclareLaunchArgument, IncludeLaunchDescription,
+                            RegisterEventHandler, EmitEvent, LogInfo)
+from launch.conditions import IfCondition
+from launch.launch_description_sources import PythonLaunchDescriptionSource
+from launch.substitutions import LaunchConfiguration
+from launch.events import matches_action
+from launch_ros.events.lifecycle import ChangeState
+from launch_ros.event_handlers import OnStateTransition
 
 
 def generate_launch_description():
-    share_dir = get_package_share_directory('ros2_ouster')
-    param_dir = get_package_share_directory('pixkit_sensor_kit_launch')
-    parameter_file = LaunchConfiguration('params_file')
-    node_name = 'ouster_driver'
+    """
+    Generate launch description for running ouster_ros components separately each
+    component will run in a separate process).
+    """
+    ouster_ros_pkg_dir = get_package_share_directory('pixkit_sensor_kit_launch')
+    default_params_file = \
+        Path(ouster_ros_pkg_dir) / 'config' / 'ouster_driver_config.yaml'
+    params_file = LaunchConfiguration('params_file')
+    params_file_arg = DeclareLaunchArgument('params_file',
+                                            default_value=str(
+                                                default_params_file),
+                                            description='name or path to the parameters file to use.')
 
-    # Acquire the driver param file
-    params_declare = DeclareLaunchArgument('params_file',
-                                           default_value=os.path.join(
-                                               param_dir, 'config', 'ouster_driver_config.yaml'),
-                                           description='FPath to the ROS2 parameters file to use.')
+    ouster_ns = LaunchConfiguration('ouster_ns')
+    ouster_ns_arg = DeclareLaunchArgument(
+        'ouster_ns', default_value='ouster')
 
-    driver_node = LifecycleNode(package='ros2_ouster',
-                                executable='ouster_driver',
-                                name=node_name,
-                                output='screen',
-                                emulate_tty=True,
-                                parameters=[parameter_file],
-                                arguments=['--ros-args', '--log-level', 'INFO'],
-                                namespace='ouster',
-                                )
+    rviz_enable = LaunchConfiguration('viz')
+    rviz_enable_arg = DeclareLaunchArgument('viz', default_value='False')
 
-    configure_event = EmitEvent(
+    os_sensor = LifecycleNode(
+        package='ouster_ros',
+        executable='os_sensor',
+        name='os_sensor',
+        namespace=ouster_ns,
+        parameters=[params_file],
+        output='screen',
+    )
+
+    sensor_configure_event = EmitEvent(
         event=ChangeState(
-            lifecycle_node_matcher=matches_action(driver_node),
+            lifecycle_node_matcher=matches_action(os_sensor),
             transition_id=lifecycle_msgs.msg.Transition.TRANSITION_CONFIGURE,
         )
     )
 
-    activate_event = RegisterEventHandler(
+    sensor_activate_event = RegisterEventHandler(
         OnStateTransition(
-            target_lifecycle_node=driver_node, goal_state='inactive',
+            target_lifecycle_node=os_sensor, goal_state='inactive',
             entities=[
-                LogInfo(
-                    msg="[LifecycleLaunch] Ouster driver node is activating."),
+                LogInfo(msg="os_sensor activating..."),
                 EmitEvent(event=ChangeState(
-                    lifecycle_node_matcher=matches_action(driver_node),
+                    lifecycle_node_matcher=matches_action(os_sensor),
                     transition_id=lifecycle_msgs.msg.Transition.TRANSITION_ACTIVATE,
                 )),
             ],
+            handle_once=True
         )
     )
 
-    # TODO make lifecycle transition to shutdown before SIGINT
-    shutdown_event = RegisterEventHandler(
-        OnShutdown(
-            on_shutdown=[
-                EmitEvent(event=ChangeState(
-                  lifecycle_node_matcher=matches_node_name(node_name=node_name),
-                  transition_id=lifecycle_msgs.msg.Transition.TRANSITION_ACTIVE_SHUTDOWN,
-                )),
-                LogInfo(
-                    msg="[LifecycleLaunch] Ouster driver node is exiting."),
-            ],
-        )
+    # TODO: figure out why registering for on_shutdown event causes an exception
+    # and error handling
+    # shutdown_event = RegisterEventHandler(
+    #     OnShutdown(
+    #         on_shutdown=[
+    #             EmitEvent(event=ChangeState(
+    #               lifecycle_node_matcher=matches_node_name(node_name=F"/ouster/os_sensor"),
+    #               transition_id=lifecycle_msgs.msg.Transition.TRANSITION_ACTIVE_SHUTDOWN,
+    #             )),
+    #             LogInfo(msg="os_sensor node exiting..."),
+    #         ],
+    #     )
+    # )
+
+    os_cloud = Node(
+        package='ouster_ros',
+        executable='os_cloud',
+        name='os_cloud',
+        namespace=ouster_ns,
+        parameters=[params_file],
+        output='screen',
     )
 
-    return LaunchDescription([
-        params_declare,
-        driver_node,
-        activate_event,
-        configure_event,
-        shutdown_event,
+    os_image = Node(
+        package='ouster_ros',
+        executable='os_image',
+        name='os_image',
+        namespace=ouster_ns,
+        parameters=[params_file],
+        output='screen',
+    )
+
+    rviz_launch_file_path = \
+        Path(ouster_ros_pkg_dir) / 'launch' / 'rviz.launch.py'
+    rviz_launch = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource([str(rviz_launch_file_path)]),
+        condition=IfCondition(rviz_enable)
+    )
+
+    return launch.LaunchDescription([
+        params_file_arg,
+        ouster_ns_arg,
+        rviz_enable_arg,
+        rviz_launch,
+        os_sensor,
+        os_cloud,
+        os_image,
+        sensor_configure_event,
+        sensor_activate_event,
+        # shutdown_event
     ])

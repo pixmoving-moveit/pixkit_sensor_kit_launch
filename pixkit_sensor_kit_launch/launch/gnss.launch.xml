@@ -1,6 +1,6 @@
 <launch>
   <arg name="launch_driver" default="true"/>
-  <arg name="gnss_receiver" default="chc" description="ublox(default) or septentrio or chc"/>
+  <arg name="gnss_receiver" default="fixposition" description="ublox(default) or septentrio or chc or fixposition"/>
   <arg name="coordinate_system" default="4" description="0:UTM, 1:MGRS, 2:PLANE"/>
 
   <group>
@@ -10,12 +10,19 @@
     <let name="navsatfix_topic_name" value="ublox/nav_sat_fix" if="$(eval &quot;'$(var gnss_receiver)'=='ublox'&quot;)"/>
     <let name="navsatfix_topic_name" value="septentrio/nav_sat_fix" if="$(eval &quot;'$(var gnss_receiver)'=='septentrio'&quot;)"/>
     <let name="navsatfix_topic_name" value="fix" if="$(eval &quot;'$(var gnss_receiver)'=='chc'&quot;)"/>
+    <let name="navsatfix_topic_name" value="/fixposition/navsatfix" if="$(eval &quot;'$(var gnss_receiver)'=='fixposition'&quot;)"/>
     <let name="orientation_topic_name" value="/autoware_orientation"/>
     
+    <!-- fixposition Driver(fixposition) -->
+    <group if="$(eval &quot;'$(var gnss_receiver)'=='fixposition'&quot;)">
+      <include file="$(find-pkg-share pixkit_sensor_kit_launch)/launch/fixposition.launch.xml" />
+    </group>
+
     <!-- Chc Driver(nmea_navsat_driver) -->
     <group if="$(eval &quot;'$(var gnss_receiver)'=='chc'&quot;)">
       <include file="$(find-pkg-share pixkit_sensor_kit_launch)/launch/nmea_tcpclient_driver.launch.py" />
     </group>
+
 
     <!-- Ublox Driver -->
     <group if="$(eval &quot;'$(var gnss_receiver)'=='ublox'&quot;)">

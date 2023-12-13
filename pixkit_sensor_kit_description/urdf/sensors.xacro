@@ -15,8 +15,13 @@
   <link name="ultrasonic_5" />
   <link name="ultrasonic_6" />
   <link name="ultrasonic_7" />
-  <link name="camera" />
 
+  <link name="ultrasonic_8" />
+  <link name="ultrasonic_9" />
+  <link name="ultrasonic_10" />
+  <link name="ultrasonic_11" />
+
+  <link name="camera" />
 
   <xacro:arg name="config_dir" default="$(find pixkit_sensor_kit_description)"/>
   <xacro:property name="calibration" value="${xacro.load_yaml('$(arg config_dir)/sensors_calibration.yaml')}"/>
@@ -86,6 +91,27 @@
     <parent link="base_link" />
     <child link="ultrasonic_7" />
     <origin xyz="${calibration['base_link2ultrasonic_7']['x']} ${calibration['base_link2ultrasonic_7']['y']} ${calibration['base_link2ultrasonic_7']['z']}" rpy="${calibration['base_link2ultrasonic_7']['roll']} ${calibration['base_link2ultrasonic_7']['pitch']} ${calibration['base_link2ultrasonic_7']['yaw']}" />
+  </joint>
+
+   <joint name="baselink_ultrasonic_8" type="fixed">
+    <parent link="base_link" />
+    <child link="ultrasonic_8" />
+    <origin xyz="${calibration['base_link2ultrasonic_8']['x']} ${calibration['base_link2ultrasonic_8']['y']} ${calibration['base_link2ultrasonic_8']['z']}" rpy="${calibration['base_link2ultrasonic_8']['roll']} ${calibration['base_link2ultrasonic_8']['pitch']} ${calibration['base_link2ultrasonic_8']['yaw']}" />
+  </joint>
+  <joint name="baselink_ultrasonic_9" type="fixed">
+    <parent link="base_link" />
+    <child link="ultrasonic_9" />
+    <origin xyz="${calibration['base_link2ultrasonic_9']['x']} ${calibration['base_link2ultrasonic_9']['y']} ${calibration['base_link2ultrasonic_9']['z']}" rpy="${calibration['base_link2ultrasonic_9']['roll']} ${calibration['base_link2ultrasonic_9']['pitch']} ${calibration['base_link2ultrasonic_9']['yaw']}" />
+  </joint>
+  <joint name="baselink_ultrasonic_10" type="fixed">
+    <parent link="base_link" />
+    <child link="ultrasonic_10" />
+    <origin xyz="${calibration['base_link2ultrasonic_10']['x']} ${calibration['base_link2ultrasonic_10']['y']} ${calibration['base_link2ultrasonic_10']['z']}" rpy="${calibration['base_link2ultrasonic_10']['roll']} ${calibration['base_link2ultrasonic_10']['pitch']} ${calibration['base_link2ultrasonic_10']['yaw']}" />
+  </joint>
+  <joint name="baselink_ultrasonic_11" type="fixed">
+    <parent link="base_link" />
+    <child link="ultrasonic_11" />
+    <origin xyz="${calibration['base_link2ultrasonic_11']['x']} ${calibration['base_link2ultrasonic_11']['y']} ${calibration['base_link2ultrasonic_11']['z']}" rpy="${calibration['base_link2ultrasonic_11']['roll']} ${calibration['base_link2ultrasonic_11']['pitch']} ${calibration['base_link2ultrasonic_11']['yaw']}" />
   </joint>
 
   <joint name="rs16_camera" type="fixed">
