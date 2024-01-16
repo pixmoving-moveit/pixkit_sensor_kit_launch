@@ -12,37 +12,31 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-""" A simple launch file for the nmea_tcpclient_driver node. """
+""" A simple launch file for the nmea_socket_driver node. """
 
 import os
 import sys
 
 from ament_index_python.packages import get_package_share_directory
-from launch import LaunchDescription, LaunchIntrospector, LaunchService, substitutions
+from launch import LaunchDescription, LaunchIntrospector, LaunchService
 from launch_ros import actions
-from launch.actions import DeclareLaunchArgument
 
 
 def generate_launch_description():
-    """Generate a launch description for a single tcpclient driver."""
-    logger = substitutions.LaunchConfiguration("log_level")
+    """Generate a launch description for a single socket driver."""
+    config_file = os.path.join(get_package_share_directory("nmea_navsat_driver"), "config", "nmea_socket_driver.yaml")
     driver_node = actions.Node(
         package='nmea_navsat_driver',
-        executable='nmea_tcpclient_driver',
+        executable='nmea_socket_driver',
         output='screen',
         parameters=[{
-            "ip": "192.168.1.110",
-            "port": 9904,
-            "buffer_size": 4096
-        }],
-        arguments=['--ros-args', '--log-level', logger]
-        )
-    argument = DeclareLaunchArgument(
-            "log_level",
-            default_value=["error"],
-            description="Logging level"
-            )
-    return LaunchDescription([argument, driver_node])
+            "ip": "192.168.4.88",
+            "port": 9906,
+            "buffer_size": 4096,
+            "frame_id": "gnss",
+        }])
+
+    return LaunchDescription([driver_node])
 
 
 def main(argv):

@@ -14,7 +14,8 @@
     
     <!-- Chc Driver(nmea_navsat_driver) -->
     <group if="$(eval &quot;'$(var gnss_receiver)'=='chc'&quot;)">
-      <include file="$(find-pkg-share pixkit_sensor_kit_launch)/launch/nmea_tcpclient_driver.launch.py" />
+      <!-- <include file="$(find-pkg-share robobus_sensor_kit_launch)/launch/combined_navigation/nmea_tcpclient_driver.launch.py" /> -->
+      <include file="$(find-pkg-share robobus_sensor_kit_launch)/launch/combined_navigation/nmea_udpclient_driver.launch.py" />
     </group>
 
     <!-- Ublox Driver -->

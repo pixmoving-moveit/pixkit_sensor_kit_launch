@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import os
+from ament_index_python import get_package_share_directory
 
 import launch
 from launch.actions import DeclareLaunchArgument
@@ -23,21 +25,24 @@ from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import ComposableNodeContainer
 from launch_ros.actions import LoadComposableNodes
 from launch_ros.descriptions import ComposableNode
+from launch.actions import IncludeLaunchDescription
+from launch.launch_description_sources import PythonLaunchDescriptionSource
 
 
 def launch_setup(context, *args, **kwargs):
     # set concat filter as a component
-    concat_component = ComposableNode(
+    concat_component_raw = ComposableNode(
         package="pointcloud_preprocessor",
-        plugin="pointcloud_preprocessor::PointCloudConcatenateDataSynchronizerComponent",
-        name="concatenate_data",
-        remappings=[("output", "concatenated/pointcloud_unfilter")],
+        plugin="pointcloud_preprocessor::PointCloudConcatenateDataSynchronizerOusterComponent",
+        name="concatenate_data_raw",
+        remappings=[("output", "concatenated/pointcloud_raw")],
         parameters=[
             {
                 "input_topics": [
-                    "/sensing/lidar/top/outlier_filtered/pointcloud",
-                    "/sensing/lidar/left/outlier_filtered/pointcloud",
-                    # "/sensing/lidar/right/outlier_filtered/pointcloud",
+                    "/sensing/lidar/top/ouster",
+                    # "/sensing/lidar/rear_right/ouster/points",
+                    # "/sensing/lidar/front_right/ouster/points",
+                    # "/sensing/lidar/rear_left/ouster/points",
                 ],
                 "output_frame": LaunchConfiguration("base_frame"),
             }
@@ -50,23 +55,24 @@ def launch_setup(context, *args, **kwargs):
         plugin="pointcloud_preprocessor::CropBoxFilterComponent",
         name="crop_box_filter",
         remappings=[
-            ("input", "concatenated/pointcloud_unfilter"),
+            ("input", "concatenated/pointcloud_raw"),
             ("output", "concatenated/pointcloud"),
         ],
         parameters=[
             {
                 "input_frame": LaunchConfiguration("base_frame"),
                 "output_frame": LaunchConfiguration("base_frame"),
-                "min_x": -1.0,
-                "max_x": 1.0,
-                "min_y": -0.5,
-                "max_y": 0.5,
-                "min_z": -0.5,
-                "max_z": 1.8,
+                "min_x": -1.9,
+                "max_x": 1.9,
+                "min_y": -1.3,
+                "max_y": 1.3,
+                "min_z": -0.4,
+                "max_z": 2.5,
                 "negative": True,
             }
         ],
     )
+
     # set container to run all required components in the same process
     container = ComposableNodeContainer(
         name=LaunchConfiguration("container_name"),
@@ -86,7 +92,7 @@ def launch_setup(context, *args, **kwargs):
 
     # load concat or passthrough filter
     concat_loader = LoadComposableNodes(
-        composable_node_descriptions=[concat_component, cropbox_component],
+        composable_node_descriptions=[concat_component_raw, cropbox_component],
         target_container=target_container,
         condition=IfCondition(LaunchConfiguration("use_concat_filter")),
     )
@@ -103,8 +109,9 @@ def generate_launch_description():
     add_launch_arg("base_frame", "base_link")
     add_launch_arg("use_multithread", "False")
     add_launch_arg("use_intra_process", "False")
-    add_launch_arg("use_pointcloud_container", "False")
+    add_launch_arg("use_pointcloud_container", "True")
     add_launch_arg("container_name", "pointcloud_preprocessor_container")
+    add_launch_arg("use_concat_filter", "True")
 
     set_container_executable = SetLaunchConfiguration(
         "container_executable",

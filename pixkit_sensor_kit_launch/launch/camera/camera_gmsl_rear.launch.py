@@ -49,22 +49,41 @@ def generate_launch_description():
 
     args, unknown = parser.parse_known_args(sys.argv[4:])
 
-    usb_cam_dir = get_package_share_directory('pixkit_sensor_kit_launch')
-
-    # get path to params file
-    params_path = os.path.join(
-        usb_cam_dir,
-        'config',
-        'params.yaml'
-    )
-
+    usb_cam_dir = get_package_share_directory('robobus_sensor_kit_launch')
+  
     node_name = args.node_name
-
-    print(params_path)
+    # get path to params file
+    parameters={
+        "video_device": "/dev/camera/rear_6mm",
+        "framerate": 30.0,
+        "io_method": "mmap",
+        "frame_id": "camera_rear_link",
+        "pixel_format": "yuyv2rgb",
+        "image_width": 1920 ,
+        "image_height": 1080,
+        "camera_name": "camera_rear_3mm",
+        "camera_info_url": "file://${ROS_HOME}/../pix/parameter/sensor_kit/robobus_sensor_kit_description/intrinsic_parameters/camera_rear_3mm.yaml",
+        # reusing same camera intrinsics only for demo, should really be unique for camera2"
+        "brightness": -1,
+        "contrast": -1,
+        "saturation": -1,
+        "sharpness": -1,
+        "gain": -1,
+        "auto_white_balance": True,
+        "white_balance": 4000,
+        "autoexposure": True,
+        "exposure": 100,
+        "autofocus": False,
+        "focus": -1,
+        # resize
+        "image_resize": 2,
+        "camera_lifetime": 33,
+    }
+    parameters["video_device"] = os.path.realpath(parameters["video_device"])
     ld.add_action(Node(
         package='usb_cam', executable='usb_cam_node_exe', output='screen',
         name=node_name,
-        # namespace=ns,
-        parameters=[params_path]
+        namespace="rear/gmsl",
+        parameters=[parameters]
         ))
     return ld
