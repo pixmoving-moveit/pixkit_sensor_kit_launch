@@ -49,7 +49,7 @@ def generate_launch_description():
 
     args, unknown = parser.parse_known_args(sys.argv[4:])
 
-    usb_cam_dir = get_package_share_directory('robobus_sensor_kit_launch')
+    usb_cam_dir = get_package_share_directory('pixkit_sensor_kit_launch')
   
     node_name = args.node_name
     # get path to params file

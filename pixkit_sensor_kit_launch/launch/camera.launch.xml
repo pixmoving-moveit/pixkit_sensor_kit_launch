@@ -6,12 +6,12 @@
   <!-- CAMERA DEIVER -->
     <group if="$(eval &quot;'$(var camera_type)'=='gmsl'&quot;)">
       <push-ros-namespace namespace="camera"/>
-      <include file="$(find-pkg-share robobus_sensor_kit_launch)/launch/camera/camera_gmsl_top.launch.py" if="$(var launch_driver)" />
+      <include file="$(find-pkg-share pixkit_sensor_kit_launch)/launch/camera/camera_gmsl_top.launch.py" if="$(var launch_driver)" />
     </group>
 
     <group if="$(eval &quot;'$(var camera_type)'=='flir_12mm'&quot;)">
       <push-ros-namespace namespace="camera/top"/>
-      <include file="$(find-pkg-share robobus_sensor_kit_launch)/launch/camera/spinnaker_camera_driver.launch.py" if="$(var launch_driver)" />
+      <include file="$(find-pkg-share pixkit_sensor_kit_launch)/launch/camera/spinnaker_camera_driver.launch.py" if="$(var launch_driver)" />
     </group>
 
     <!-- <group>

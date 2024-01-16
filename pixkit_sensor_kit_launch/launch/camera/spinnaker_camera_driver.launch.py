@@ -109,7 +109,7 @@ def launch_setup(context, *args, **kwargs):
     serial_number = "22495523"
     camera_type = 'blackfly_s'
     parameter_file = PathJoinSubstitution(
-        [FindPackageShare('robobus_sensor_kit_launch'), 'config',
+        [FindPackageShare('pixkit_sensor_kit_launch'), 'config',
             camera_type + '.yaml'])
     
     camerainfo_url = 'file://${ROS_HOME}/../pix/parameter/sensor_kit/robobus_sensor_kit_description/intrinsic_parameters/flir_top_12mm.yaml'
