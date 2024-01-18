@@ -19,8 +19,7 @@
     <!-- sensor -->
     <xacro:property name="calibration" value="${xacro.load_yaml('$(arg config_dir)/sensor_kit_calibration.yaml')}"/>
     
-    <link name="traffic_light_left_camera" />
-    <link name="zed" />
+    <link name="camera_top_link" />
     <link name="gnss" />
     <link name="laser_top_base_link" />
     <link name="rs16_top_base_link" />
@@ -79,28 +78,16 @@
     </joint>
 
     <!-- camera -->
-    <joint name="traffic_light_left_camera_joint" type="fixed">
-      <parent link="sensor_kit_base_link" />
-      <child link="traffic_light_left_camera" />
+    <joint name="camera_top_link_joint" type="fixed">
+      <parent link="ouster_top_base_link" />
+      <child link="camera_top_link" />
       <origin 
-        xyz="${calibration['sensor_kit_base_link']['traffic_light_left_camera']['x']} 
-             ${calibration['sensor_kit_base_link']['traffic_light_left_camera']['y']} 
-             ${calibration['sensor_kit_base_link']['traffic_light_left_camera']['z']}" 
-        rpy="${calibration['sensor_kit_base_link']['traffic_light_left_camera']['roll']} 
-             ${calibration['sensor_kit_base_link']['traffic_light_left_camera']['pitch']} 
-             ${calibration['sensor_kit_base_link']['traffic_light_left_camera']['yaw']}" />
-    </joint>
-
-    <joint name="zed_joint" type="fixed">
-      <parent link="sensor_kit_base_link" />
-      <child link="zed" />
-      <origin 
-        xyz="${calibration['sensor_kit_base_link']['zed']['x']} 
-             ${calibration['sensor_kit_base_link']['zed']['y']} 
-             ${calibration['sensor_kit_base_link']['zed']['z']}" 
-        rpy="${calibration['sensor_kit_base_link']['zed']['roll']} 
-             ${calibration['sensor_kit_base_link']['zed']['pitch']} 
-             ${calibration['sensor_kit_base_link']['zed']['yaw']}" />
+        xyz="${calibration['ouster_top_base_link']['camera_top_link']['x']} 
+             ${calibration['ouster_top_base_link']['camera_top_link']['y']} 
+             ${calibration['ouster_top_base_link']['camera_top_link']['z']}" 
+        rpy="${calibration['ouster_top_base_link']['camera_top_link']['roll']} 
+             ${calibration['ouster_top_base_link']['camera_top_link']['pitch']} 
+             ${calibration['ouster_top_base_link']['camera_top_link']['yaw']}" />
     </joint>
 
     <!-- gnss -->

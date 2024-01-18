@@ -31,43 +31,43 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 
 def launch_setup(context, *args, **kwargs):
     # set concat filter as a component
-    concat_component_raw = ComposableNode(
-        package="pointcloud_preprocessor",
-        plugin="pointcloud_preprocessor::PointCloudConcatenateDataSynchronizerOusterComponent",
-        name="concatenate_data_raw",
-        remappings=[("output", "concatenated/pointcloud_raw")],
-        parameters=[
-            {
-                "input_topics": [
-                    "/sensing/lidar/top/ouster",
-                    # "/sensing/lidar/rear_right/ouster/points",
-                    # "/sensing/lidar/front_right/ouster/points",
-                    # "/sensing/lidar/rear_left/ouster/points",
-                ],
-                "output_frame": LaunchConfiguration("base_frame"),
-            }
-        ],
-        extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
-    )
+    # concat_component_raw = ComposableNode(
+    #     package="pointcloud_preprocessor",
+    #     plugin="pointcloud_preprocessor::PointCloudConcatenateDataSynchronizerOusterComponent",
+    #     name="concatenate_data_raw",
+    #     remappings=[("output", "concatenated/pointcloud_raw")],
+    #     parameters=[
+    #         {
+    #             "input_topics": [
+    #                 "/sensing/lidar/top/ouster/points",
+    #                 # "/sensing/lidar/rear_right/ouster/points",
+    #                 # "/sensing/lidar/front_right/ouster/points",
+    #                 # "/sensing/lidar/rear_left/ouster/points",
+    #             ],
+    #             "output_frame": LaunchConfiguration("base_frame"),
+    #         }
+    #     ],
+    #     extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
+    # )
     # set crop box filter as a component
     cropbox_component = ComposableNode(
         package="pointcloud_preprocessor",
         plugin="pointcloud_preprocessor::CropBoxFilterComponent",
         name="crop_box_filter",
         remappings=[
-            ("input", "concatenated/pointcloud_raw"),
+            ("input", "/sensing/lidar/top/ouster/points"),
             ("output", "concatenated/pointcloud"),
         ],
         parameters=[
             {
                 "input_frame": LaunchConfiguration("base_frame"),
                 "output_frame": LaunchConfiguration("base_frame"),
-                "min_x": -1.9,
-                "max_x": 1.9,
-                "min_y": -1.3,
-                "max_y": 1.3,
-                "min_z": -0.4,
-                "max_z": 2.5,
+                "min_x": -1.0,
+                "max_x": 1.0,
+                "min_y": -0.5,
+                "max_y": 0.5,
+                "min_z": -0.5,
+                "max_z": 1.8,
                 "negative": True,
             }
         ],
@@ -92,7 +92,7 @@ def launch_setup(context, *args, **kwargs):
 
     # load concat or passthrough filter
     concat_loader = LoadComposableNodes(
-        composable_node_descriptions=[concat_component_raw, cropbox_component],
+        composable_node_descriptions=[cropbox_component],
         target_container=target_container,
         condition=IfCondition(LaunchConfiguration("use_concat_filter")),
     )

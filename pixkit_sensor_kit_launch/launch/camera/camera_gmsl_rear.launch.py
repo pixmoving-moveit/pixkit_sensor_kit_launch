@@ -62,7 +62,7 @@ def generate_launch_description():
         "image_width": 1920 ,
         "image_height": 1080,
         "camera_name": "camera_rear_3mm",
-        "camera_info_url": "file://${ROS_HOME}/../pix/parameter/sensor_kit/robobus_sensor_kit_description/intrinsic_parameters/camera_rear_3mm.yaml",
+        "camera_info_url": "file://${ROS_HOME}/../pix/parameter/sensor_kit/pixkit_sensor_kit_description/intrinsic_parameters/camera_rear_3mm.yaml",
         # reusing same camera intrinsics only for demo, should really be unique for camera2"
         "brightness": -1,
         "contrast": -1,

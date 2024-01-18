@@ -30,7 +30,7 @@ def generate_launch_description():
         executable='nmea_socket_driver',
         output='screen',
         parameters=[{
-            "ip": "192.168.4.88",
+            "ip": "192.168.1.102",
             "port": 9906,
             "buffer_size": 4096,
             "frame_id": "gnss",

@@ -112,7 +112,7 @@ def launch_setup(context, *args, **kwargs):
         [FindPackageShare('pixkit_sensor_kit_launch'), 'config',
             camera_type + '.yaml'])
     
-    camerainfo_url = 'file://${ROS_HOME}/../pix/parameter/sensor_kit/robobus_sensor_kit_description/intrinsic_parameters/flir_top_12mm.yaml'
+    camerainfo_url = 'file://${ROS_HOME}/../pix/parameter/sensor_kit/pixkit_sensor_kit_description/intrinsic_parameters/flir_top_12mm.yaml'
     
     node = Node(package='spinnaker_camera_driver',
                 executable='camera_driver_node',

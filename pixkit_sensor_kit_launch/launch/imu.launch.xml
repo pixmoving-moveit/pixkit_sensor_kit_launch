@@ -13,7 +13,7 @@
         <param name="reliability" value="best_effort"/>
       </node>
     </group> -->
-    <arg name="imu_corrector_param_file" default="$(env HOME)/pix/parameter/vehicle/sensor_kit/robobus_sensor_kit_description/intrinsic_parameters/imu_corrector.param.yaml"/>
+    <arg name="imu_corrector_param_file" default="$(env HOME)/pix/parameter/vehicle/sensor_kit/pixkit_sensor_kit_description/intrinsic_parameters/imu_corrector.param.yaml"/>
     <include file="$(find-pkg-share imu_corrector)/launch/imu_corrector.launch.xml">
       <arg name="input_topic" value="/sensing/gnss/chc/imu"/>
       <arg name="output_topic" value="imu_data"/>
